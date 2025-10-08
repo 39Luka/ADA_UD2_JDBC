@@ -1,9 +1,11 @@
 package dao;
 
 
+import com.zaxxer.hikari.HikariDataSource;
 import dto.ResumenCliente;
 import model.Pedido;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,15 +17,15 @@ import java.util.List;
 
 public class ClienteDao {
 
-    DBConnection dbCon;
+    DataSource ds;
 
     public ClienteDao() throws IOException {
-        dbCon = new DBConnection();
+        ds = DsProvider.getDataSource();
     }
 
     public boolean updateClientName(int id, String newName) throws SQLException {
         String query = "UPDATE cliente SET nombre = ? WHERE id = ?";
-        try (Connection con = dbCon.getConnection();
+        try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setString(1, newName);
@@ -37,7 +39,7 @@ public class ClienteDao {
     public List<Pedido> getPedidosByCliente(int clienteId) throws SQLException {
         String query = "SELECT * FROM pedido WHERE cliente_Id = ? ORDER BY fecha ASC, id ASC";
         List<Pedido> pedidos = new ArrayList<>();
-        try (Connection con = dbCon.getConnection();
+        try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
 
             ps.setInt(1, clienteId);
@@ -59,7 +61,7 @@ public class ClienteDao {
 
     public int deleteClienteYPedidos(int clienteId) throws SQLException {
         String query = "DELETE FROM cliente WHERE id = ?";
-        try(Connection con = dbCon.getConnection();
+        try(Connection con = ds.getConnection();
         PreparedStatement ps = con.prepareStatement(query)){
 
             ps.setInt(1, clienteId);
@@ -78,7 +80,7 @@ public class ClienteDao {
                 "ORDER BY totalGastado DESC, nombre ASC";
 
         List<ResumenCliente> resumenClientes = new ArrayList<>();
-        try (Connection con = dbCon.getConnection();
+        try (Connection con = ds.getConnection();
         PreparedStatement ps = con.prepareStatement(query)){
 
             ps.setDate(1, new java.sql.Date(desde.getTime()));
