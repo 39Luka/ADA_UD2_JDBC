@@ -30,12 +30,16 @@ public class Main {
             System.out.println(clienteDao.deleteClienteYPedidos(1));*/
 
             //Testeo del metodo totalPedidosPorCliente
-            ClienteDao clienteDao = new ClienteDao();
+           /* ClienteDao clienteDao = new ClienteDao();
             LocalDate desde = LocalDate.of(2014, 1, 1);
             LocalDate hasta = LocalDate.of(2017, 12, 31);
 
-            System.out.println(clienteDao.totalPedidosPorCliente(Date.valueOf(desde),Date.valueOf(hasta)));
+            System.out.println(clienteDao.totalPedidosPorCliente(Date.valueOf(desde),Date.valueOf(hasta)));*/
 
+            //Testeo de metodo generarIndiceCompuesto
+
+            ClienteDao clienteDao = new ClienteDao();
+            clienteDao.generarIndiceCompuesto();
 
         } catch (IOException e) {
             throw new RuntimeException(e);

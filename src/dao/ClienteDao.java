@@ -7,10 +7,7 @@ import model.Pedido;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -98,5 +95,14 @@ public class ClienteDao {
         }
 
         return resumenClientes;
+    }
+
+    public void generarIndiceCompuesto() throws SQLException {
+        String query = "CREATE INDEX idx_cliente_fecha ON pedido(cliente_id, fecha)";
+        try (Connection con = ds.getConnection();
+             Statement statement = con.createStatement()){
+            statement.execute(query);
+
+        }
     }
 }
