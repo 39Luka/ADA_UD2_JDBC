@@ -7,6 +7,9 @@ import java.nio.file.Path;
 
 import java.util.Properties;
 
+/**
+ * Clase para leer las propiedades ubicadas en la carpeta config
+ */
 public class LecturaPropiedades {
 
     private static Properties properties = new Properties();
