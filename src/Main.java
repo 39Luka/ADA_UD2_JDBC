@@ -42,9 +42,9 @@ public class Main {
             clienteDao.generarIndiceCompuesto();
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println("Error: Problemas de la entrada o salida");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error: Problemas con las consultas SQL");
         }
 
 
