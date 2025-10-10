@@ -1,6 +1,6 @@
 package model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Producto {
     int id;
@@ -9,6 +9,15 @@ public class Producto {
     int stock;
     double precio;
     boolean activo;
-    LocalDateTime createdAt;
+    LocalDate createdAt;
 
+    public Producto(int id, String sku, String nombre, int stock, double precio, boolean activo, LocalDate createdAt) {
+        this.id = id;
+        this.sku = sku;
+        this.nombre = nombre;
+        this.stock = stock;
+        this.precio = precio;
+        this.activo = activo;
+        this.createdAt = createdAt;
+    }
 }

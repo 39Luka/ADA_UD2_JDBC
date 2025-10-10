@@ -1,6 +1,6 @@
 package model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Movimiento {
     int id;
@@ -8,7 +8,7 @@ public class Movimiento {
     Tipo tipo;
     int cantidad;
     String motivo;
-    LocalDateTime fecha;
+    LocalDate fecha;
 
 }
 
