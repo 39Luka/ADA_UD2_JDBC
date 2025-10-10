@@ -38,6 +38,7 @@ public class ProductoDao {
                 System.out.println("Error: "+ e.getMessage());
             }else{
                 System.out.println("Error: Otro tipo de error SQL");
+                System.out.println(e.getMessage());
             }
         }
     }
