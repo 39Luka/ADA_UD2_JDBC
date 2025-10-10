@@ -1,0 +1,81 @@
+USE `mysql-db`;
+
+DELIMITER //
+
+create procedure sp_crear_producto(IN p_sku varchar(50), IN p_nombre varchar(100), IN p_precio decimal(10,2), OUT p_id int)
+BEGIN
+	declare sku_existe INT;
+
+    select count(*) into sku_existe
+    from productos
+    where sku = p_sku;
+
+    if sku_existe > 0 then
+		signal sqlstate '45000'
+			set message_text = 'SKU duplicado';
+	else
+		insert into productos(sku, nombre, precio, stock, activo, created_at)
+        values(p_sku, p_nombre, p_precio, 0, TRUE, Now());
+
+        set p_id = last_insert_id();
+	end if;
+
+
+END//
+
+DELIMITER ;
+
+
+USE `mysql-db`;
+
+DELIMITER //
+
+create procedure sp_set_stock(IN p_sku varchar(50), IN p_nuevo_stock INT, OUT p_stock_actual int)
+BEGIN
+	declare sku_existe INT;
+
+    select count(*) into sku_existe
+    from productos
+    where sku = p_sku;
+
+    if sku_existe = 0 then
+		signal sqlstate '45000'
+			set message_text = 'SKU no existe';
+	elseif p_nuevo_stock < 0 then
+		signal sqlstate '45000'
+				set message_text = 'Stock no puede ser negativo';
+	else
+		update productos set stock = p_nuevo_stock where sku = P_sku;
+		set p_stock_actual = p_nuevo_stock;
+
+	end if;
+
+
+END//
+
+DELIMITER ;
+
+USE `mysql-db`;
+
+DELIMITER //
+
+create function fn_stock_actual(p_sku VARCHAR(50))
+returns int
+deterministic
+BEGIN
+
+    declare stock int default -1;
+
+    declare continue handler for not found
+	SET stock = -1;
+
+	select stock into stock from productos where sku = p_sku;
+
+    return stock;
+
+END//
+
+DELIMITER ;
+
+
+

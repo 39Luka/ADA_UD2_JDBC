@@ -20,50 +20,6 @@ public class ProductoDao {
 
 
 
-    public Producto buscarPorSku(String sku){
-        String query = "SELECT * from productos where sku = ?";
-        try(Connection con = ds.getConnection();
-            PreparedStatement ps = con.prepareStatement(query)){
-            ps.setString(1, sku);
-            try(ResultSet rs = ps.executeQuery()){
-                    Producto producto = new Producto(
-                            rs.getInt("id"),
-                            rs.getString("sku"),
-                            rs.getString("nombre"),
-                            rs.getInt("stock"),
-                            rs.getDouble("precio"),
-                            rs.getBoolean("activo"),
-                            rs.getDate("created_at").toLocalDate()
-                    );
-                    return producto;
-
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public List<ProductoStock> ConsultarStock(){
-        String query = "SELECT nombre, stock from productos";
-        List<ProductoStock> productoStocks = new ArrayList<>();
-        try(Connection con = ds.getConnection();
-        Statement s = con.createStatement()){
-
-            try (ResultSet rs = s.executeQuery(query) ){
-                while (rs.next()){
-                    productoStocks.add(new ProductoStock(
-                            rs.getString("nombre"),
-                            rs.getInt("stock")
-                    ));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return productoStocks;
-    }
 
     public void crearProducto(String sku, String nombre, double precio){
         String query = "{ call sp_crear_producto(?,?,?,?) }";
@@ -85,4 +41,45 @@ public class ProductoDao {
             }
         }
     }
+
+    public void actualizaStock(String sku, int stock){
+        String query = "{ call sp_set_stock(?,?,?) }";
+        try(Connection con = ds.getConnection();
+        CallableStatement cs = con.prepareCall(query)){
+
+            cs.setString(1, sku);
+            cs.setInt(2, stock);
+            cs.registerOutParameter(3, Types.INTEGER);
+
+            cs.execute();
+            System.out.println("Nuevo stock: " + cs.getInt(3));
+
+        } catch (SQLException e) {
+            if ("45000".equals(e.getSQLState())){
+            System.out.println("Error: "+e.getMessage());}
+            else{
+                System.out.println("Error: Otro tipo de error SQL");
+
+            }
+        }
+
+    }
+
+    public void obtenerStock(String sku){
+        String query = "{ ? = call fn_stock_actual(?) }";
+        try(Connection con = ds.getConnection();
+        CallableStatement cs = con.prepareCall(query)){
+
+            cs.registerOutParameter(1, Types.INTEGER);
+            cs.setString(2, sku);
+
+            cs.execute();
+            System.out.println("Stock: " + cs.getInt(1));
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 }
