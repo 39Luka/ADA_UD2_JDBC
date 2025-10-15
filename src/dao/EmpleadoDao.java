@@ -1,15 +1,12 @@
 package dao;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 
 public class EmpleadoDao {
-    DataSource ds;
 
-    EmpleadoDao(){
-        ds = DsProvider.getDataSource();
-    }
 
-    public void insertarEmpleado(String dni, String nombre, String email, String departamento){
+    public void insertarEmpleado(String dni, String nombre, String email, String departamento, Connection connection){
 
     }
 }
