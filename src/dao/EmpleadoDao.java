@@ -5,7 +5,6 @@ import java.sql.*;
 
 public class EmpleadoDao {
 
-
     public int insertarEmpleado(String dni, String nombre, String email, String departamento, Connection connection) throws SQLException {
 
         String query = "INSERT INTO empleados(dni, nombre, email, departamento) VALUES(?,?,?,?)";
