@@ -1,12 +1,11 @@
+import dao.AuditoriaDao;
 import dao.ClienteDao;
+import model.Auditoria;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class Main {
-
 
     public static void main(String[] args) {
 
@@ -49,4 +48,6 @@ public class Main {
 
 
     }
+
+
 }

@@ -11,8 +11,8 @@ public class Main2 {
             //productoDao.crearProducto("AAA-001", "Manzana", 1.5);
             //productoDao.actualizaStock("AAA-001", 8);
             //productoDao.actualizaStock("AAA-002", 8);
-        productoDao.obtenerStock("AAA-001");
-        productoDao.obtenerStock("AAA-002");
+            productoDao.obtenerStock("AAA-001");
+            productoDao.obtenerStock("AAA-002");
 
 
 
